@@ -71,16 +71,17 @@ def dehaze_img(_id):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     light_intensity = find_intensity_of_atmospheric_light(img,gray)
     outimg = dehaze_function(img, light_intensity, 20, t0=0.55, w=0.95)
-    cv2.imwrite(kaggle_path+f'train_haze_free/train_{_id}.jpg', outimg)
+    cv2.imwrite(kaggle_path+f'test_haze_free/test_{_id}.jpg', outimg)
     
 kaggle_path = '/home/ubuntu/.kaggle/competitions/planet-understanding-the-amazon-from-space/'
-read = lambda i: cv2.imread(kaggle_path+f'train-jpg/train_{i}.jpg')
+# read = lambda i: cv2.imread(kaggle_path+f'train-jpg/train_{i}.jpg')
+read = lambda i: cv2.imread(kaggle_path+f'test-jpg/test_{i}.jpg')
 
 if __name__ == "__main__": 
     begin = int(sys.argv[1])
     end = int(sys.argv[2])
     d = range(begin,end,1)
-    chunks = [d[x:x+100] for x in range(0, len(d), 100)]
+    chunks = [d[x:x+1000] for x in range(0, len(d), 1000)]
     pool = Pool(3)
     for rang in chunks:
         print (rang)
