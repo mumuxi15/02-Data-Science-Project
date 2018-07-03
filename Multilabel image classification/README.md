@@ -20,11 +20,10 @@ Python >= 3.4, Keras 2.1.6, Tensorflow
     - Define metrics such as precison, recall and F2 score
 - Output model
   - model 1 . b01_dense121.h5 (DenseNet 121)
-  - model 2 . b02_cnn.h5  (Covolutional Neural Network Model)
 
 # How to run
 
-Predict_unlabel.ipynb
+Predict.ipynb
 
 (Predict labels of unlabelled test images)
 
