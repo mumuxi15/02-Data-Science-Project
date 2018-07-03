@@ -105,7 +105,7 @@ if __name__ == "__main__":
     d = range(begin,end,1)
 
     chunks = [d[x:x+1000] for x in range(0, len(d), 1000)]
-    pool = Pool(3)
+    pool = Pool(2)
     for rang in chunks:
         print (rang)
         pool.map(dehaze_img,rang)
