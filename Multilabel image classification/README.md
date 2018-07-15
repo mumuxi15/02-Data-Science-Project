@@ -22,12 +22,10 @@ Let's get started with downloading following files from kaggle competition  "[Pl
 
 Extract jpg from 7z file
 
-{% highlight linux %}
-
+``` bash
 7za x train-jpg.tar.7z
 tar xf train-jpg.tar
-
-{% endhighlight %}
+```
 
 The dataset consists of 41,789 labeled and 71,000 unlabeled  satellite image chips that look like following. (The labels were added for readers and are separated by space)
 
@@ -48,11 +46,9 @@ The aim is to generate labels for describing the image content and find those la
 
 ------
 
-{% highlight python3 %}
-
+``` python
 python3 a00_remove_haze.py
-
-{% endhighlight %}
+```
 
 The next step is run a00_remove_haze.py, the dehaze function will remove the haze, clear the images and increase image contrast. This improves precision recall significantly especially on the land use labels. The dehaze function is based on  ["Single Image Haze Removal using Dark Channel Prior"](https://www.robots.ox.ac.uk/~vgg/rg/papers/hazeremoval.pdf) paper.
 
