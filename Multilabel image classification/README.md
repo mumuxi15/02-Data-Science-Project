@@ -94,4 +94,4 @@ I built a multi output model based on the original DenseNet code and reduced fil
 
 # Dataflow
 
-<img style="float:left; width:800px; display: block;margin-right: 350px" src="img/dataflow.jpg" />
+<img style="float:left; width:800px; display: block;margin-right: 350px" src="https://i.imgur.com/YQY8Lca.jpg" />
