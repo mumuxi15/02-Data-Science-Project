@@ -29,7 +29,7 @@ tar xf train-jpg.tar
 
 The dataset consists of 41,789 labeled and 71,000 unlabeled  satellite image chips that look like following. (The labels were added for readers and are separated by space)
 
-![train data example](https://github.com/mumuxi15/metis_proj/blob/master/Multilabel%20image%20classification/img/eg1.jpg?raw=true)
+<img style="float:left; width:600px;" src="https://raw.githubusercontent.com/mumuxi15/metis_proj/master/Multilabel%20image%20classification/img/eg1.jpg" />
 
 Fig 1. Examples of labeled image chips. Satellite image chips have different labels depending on its content. Each image chip consists of one unique atmospheric label and zero or multiple land use labels. 
 
@@ -86,7 +86,7 @@ I built a multi output model based on the original DenseNet code and reduced fil
     - Define metrics such as precison, recall and F2 score
 - Output model
   - b01_dense121.h5 (DenseNet 121)
-  - Predict.ipynb
+  - c01_predict.py
     - Predict labels of unlabelled test images
 
 
