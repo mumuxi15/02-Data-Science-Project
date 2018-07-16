@@ -29,7 +29,7 @@ tar xf train-jpg.tar
 
 The dataset consists of 41,789 labeled and 71,000 unlabeled  satellite image chips that look like following. (The labels were added for readers and are separated by space)
 
-<img style="float:left; width:600px;" src="https://raw.githubusercontent.com/mumuxi15/metis_proj/master/Multilabel%20image%20classification/img/eg1.jpg" />
+<img style="float:left; width:600px;" src="https://i.imgur.com/GsW5QR2.jpg" />
 
 Fig 1. Examples of labeled image chips. Satellite image chips have different labels depending on its content. Each image chip consists of one unique atmospheric label and zero or multiple land use labels. 
 
