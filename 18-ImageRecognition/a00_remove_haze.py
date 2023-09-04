@@ -2,12 +2,18 @@ from multiprocessing import Pool
 import numpy as np
 import cv2
 import sys
-"""Single image dehazing."""
+"""Single image dehazing.
+   Create new images in test-clean folders
+"""
 
 class Channel_value:
     val = -1.0
     intensity = -1.0
-
+    
+class ImageProcessing:
+  def __init__(self):
+    self.path = '/home/ubuntu/.kaggle/competitions/planet-understanding-the-amazon-from-space/'
+    
 def find_dark_channel(img): #get darkest RBG channel
     return np.unravel_index(np.argmin(img), img.shape)[2]
 

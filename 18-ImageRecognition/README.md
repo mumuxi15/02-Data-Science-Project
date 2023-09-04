@@ -2,7 +2,7 @@
 
 ------
 
-I used AWS GPU instance (Amazon Cloud service) :
+AWS GPU instance (Amazon Cloud service) :
 
 ​	 **Image** : Deep Learning AMI (Ubuntu) Version 10.0 
 
@@ -10,15 +10,28 @@ I used AWS GPU instance (Amazon Cloud service) :
 
 Python Packages: , Keras 2.1.6, Tensorflow, opencv
 
+
+
+#### Background
+
+------
+
+The project "Planet: Understanding the Amazon from Space" is in collaboration with Planet, a company that operates a vast constellation of Earth-imaging satellites, and their partner SCCON in Brazil.
+
+The aim is to develop algorithms that can accurately label satellite image chips with information about atmospheric conditions, as well as various classes of land cover and land use. This involves discerning diverse features such as weather conditions, forests, rivers, and more, gold minings. The significance of this challenge lies in better comprehending the occurrence and causes of deforestation on a global scale, and subsequently crafting effective responses.
+
+##### Objective
+
+- Develop a model to label satellite image chips with atmospheric conditions and various classes of land cover and land use such as conventional mine, artisanal mine, blooming, slash burn, blow dow
+- Spot those images suggestive of illegal mining activities
+
+
+
 #### Data
 
 ------
 
-Let's get started with downloading following files from kaggle competition  "[Planet: Understanding the Amazon from Space](https://www.kaggle.com/c/planet-understanding-the-amazon-from-space)". 
-
-- train-jpg.tar.7z  
-- test-jpg.tar.7z 
-- train_v2.csv       -   labels for the train set
+Data Source  "[Planet: Understanding the Amazon from Space](https://www.kaggle.com/c/planet-understanding-the-amazon-from-space)". 
 
 Extract jpg from 7z file
 
@@ -27,48 +40,39 @@ Extract jpg from 7z file
 tar xf train-jpg.tar
 ```
 
-The dataset consists of 41,789 labeled and 71,000 unlabeled  satellite image chips that look like following. (The labels were added for readers and are separated by space)
+The dataset comprises 41,789 labeled and 71,000 unlabeled satellite image chips, visually represented as follows (with added labels for clarity, separated by spaces). Each labelled image chips accompanied by descriptive labels indicating the content of the image. These labeled image chips are characterized by a single distinct atmospheric label and can feature zero or multiple land use labels to further define their content.
 
 <img style="float:left; width:600px;" src="https://i.imgur.com/GsW5QR2.jpg" />
 
-Fig 1. Examples of labeled image chips. Satellite image chips have different labels depending on its content. Each image chip consists of one unique atmospheric label and zero or multiple land use labels. 
-
-- Weather labels: clear, cloudy, hazy, partly cloudy. 
-- Land use labels
-  - Commonly appeared: primary, agriculture, road, water, cultivation, habitation, bare ground
-  - Rare: conventional mine,  selective logging, artisanal mine,  blooming, slash burn, blow down
-
-*Hint: artisanal mine is another word for illegal mine*
-
-The aim is to generate labels for describing the image content and find those labeled artisanal mine. 
-
-#### Pre-process
+#### Pre-process Data
 
 ------
 
 ``` python
-python3 a00_remove_haze.py
+python3 image_test.py
 ```
 
-The next step is run a00_remove_haze.py, the dehaze function will remove the haze, clear the images and increase image contrast. This improves precision recall significantly especially on the land use labels. The dehaze function is based on  ["Single Image Haze Removal using Dark Channel Prior"](https://www.robots.ox.ac.uk/~vgg/rg/papers/hazeremoval.pdf) paper.
+How was the image data preprocessed?
 
-The next step is run a00_remove_haze.py, the dehaze function will remove the haze, clear the images and increase image contrast. This improves precision recall significantly especially on the land use labels. The dehaze function is based on  ["Single Image Haze Removal using Dark Channel Prior"](https://www.robots.ox.ac.uk/~vgg/rg/papers/hazeremoval.pdf) paper.
+While inspecting the image chips, I noticed that a significant portion of them appeared to be quite blurry. This could be attributed to the interference of turbulent air when light passes through the atmosphere.  Consequently, a critical preprocessing step involved addressing this issue through dehazing. The dehazing process involves the estimation of atmospheric light, denoted as ***I***,  and can be used to subtract it from the image to obtain a haze-free image. The estimation of ***I*** is accomplished by identifying it as the maximum intensity among the brightest pixels in the dark channel of the image ^[1]^ . 
 
-![How hazy image is formed](https://www.researchgate.net/profile/Seung_Won_Jung2/publication/291385074/figure/fig14/AS:320880610693124@1453515307125/Formation-of-a-hazy-image.png)
 
-In most cases light is scattered in the atmosphere before it reaches the camera and such scattered light is the main cause of blurry images or hazy images. a00_remove_haze.py  function estimates th scattered light intensity as the maximum pixel intensity. Thus by removing the scattered light images can be restored. Following are some examples  of before and after haze removal function. As demonstrated below, it works great on both images labelled clear and hazy.
 
-![How hazy image is formed](https://raw.githubusercontent.com/mumuxi15/mumuxi15.github.io/master/img/rainforest/dehaze.jpg)
+The outcome is quite remarkable – the haze-free image undergoes a significant transformation, becoming considerably brighter and more vivid in color when compared to the original image. This transformation has had a positive impact on the model's performance. In addition to dehazing, we have also incorporated image transformations, such as rotations and flips, as part of our preprocessing pipeline. These transformations serve the purpose of augmenting the dataset, effectively increasing its size and diversifying the samples used for training. 
 
-#### Build a Neural Network Model
+
+
+#### Model Explanation 
 
 ------
 
-To learn fine details we need to increase the model complexity . Here I chose to use one of the latest Neural Network architectures, DenseNet (Dense Convolutional Network), a smarter neural network designed by [Zhuang Liu and Gao Huang](https://arxiv.org/pdf/1608.06993v3.pdf) in  2017. 
+<img style="float:left; width:800px; display: block;margin-right: 350px" src="https://i.imgur.com/YQY8Lca.jpg" />
 
-The big difference to CNN is that DenseNet connects each layer to every other layer. Whereas traditional convolutional networks layers connect sequentially. DenseNet improved a flow of information and gradients throughout the network, therefore, it has better parameter efficiency and is quicker to train. 
+To capture intricate details, it becomes necessary to enhance the complexity of the model. In this context, I opted to employ one of the most recent advancements in neural network architectures – DenseNet (Dense Convolutional Network). DenseNet is an intelligent neural network design introduced by Zhuang Liu and Gao Huang in 2017.
 
-I built a multi output model based on the original DenseNet code and reduced filter number and learning rate as the original model is too memory consuming. I trained the model on the labeled image sets for 4 hours and saved the model as b01_dense121.h5. Then used it to generate labels for images. 
+One fundamental distinction from conventional Convolutional Neural Networks (CNNs) lies in how DenseNet connects its layers. While traditional CNN layers connect in a sequential manner, DenseNet uniquely establishes connections between each layer and every other layer in the network. This innovation significantly improves the flow of both information and gradients throughout the network. Consequently, DenseNet exhibits superior parameter efficiency and quicker training times.
+
+I constructed a multi-output model based on the original DenseNet framework. To make it more memory-efficient, I reduced the filter count and adjusted the learning rate, as the original model tends to be resource-intensive. The model was meticulously trained on labeled image datasets over a duration of four hours, and the resulting model was saved as 'b01_dense121.h5.' Subsequently, this model was leveraged to generate labels for images."
 
 #### How to run
 
@@ -77,7 +81,8 @@ I built a multi output model based on the original DenseNet code and reduced fil
 - working process
   - EDA.ipynb  (Image labels Analysis, display images before and after haze removed)
   - Planet.ipynb 
-
+  - Image_test (display images before and after dehaze function)
+  
 - Functions
   - a00_remove_haze.py  
   - a10_densenet_121.py
@@ -92,6 +97,11 @@ I built a multi output model based on the original DenseNet code and reduced fil
 
 
 
-# Dataflow
 
-<img style="float:left; width:800px; display: block;margin-right: 350px" src="https://i.imgur.com/YQY8Lca.jpg" />
+#### Reference
+
+------
+
+The dehaze function is based on  ["Single Image Haze Removal using Dark Channel Prior"](https://projectsweb.cs.washington.edu/research/insects/CVPR2009/award/hazeremv_drkchnl.pdf) paper.
+
+![How hazy image is formed](https://www.researchgate.net/profile/Seung_Won_Jung2/publication/291385074/figure/fig14/AS:320880610693124@1453515307125/Formation-of-a-hazy-image.png)
