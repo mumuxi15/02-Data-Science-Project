@@ -6,10 +6,13 @@ import time
 import json
 import requests as re
 
- 
-def predict(c):
-	post_url = "https://covid19.who.int/page-data/region/wpro/country/cn/page-data.json"
+country_code = {'CHN':['wpro','cn'],'USA':['amro','us']} 
+
+
+def predict(country):
+	post_url = "https://covid19.who.int/page-data/region/%s/country/%s/page-data.json"%(country_code[country][0],country_code[country][1])
 	
+	print (post_url)
 	try:
 		res = re.get(post_url, timeout=10)
 		status_code = res.status_code
@@ -24,7 +27,7 @@ def predict(c):
 	df = pd.DataFrame(data=json_data['rows'], columns=cols)
 	df['date'] = pd.to_datetime(df['date'],utc=True,unit='ms').dt.date
 	df.drop(columns=['_'],inplace=True)	
-	#print (df.describe().T) 
+#	print (df.describe().T) 
 #	print (df.loc[df['Deaths']<0]) # abnormal data neg daily death 
 	df = df.loc[df['Deaths']>0]
 	print (df)
@@ -65,4 +68,5 @@ def predict(c):
 #	plt.ylabel('infected number', fontsize=14)
 	plt.show()
  
-predict(c='china')
+predict(country='USA')
+#predict(country='CHN')
