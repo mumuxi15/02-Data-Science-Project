@@ -1,6 +1,4 @@
-#### Goals
-
-_________________________________________________________________
+## Goals
 
 Given a set of labeled satellite image chips, the project aims to develop an algorithm for labeling unlabeled image chips. The primary focus is on detecting the occurrence of 'artisanal mining,' commonly referred to as illegal mining, among a set of 16 labels categorized into three main groups: <span style="color:SALMON">  atmospheric conditions</span>,  <span style="color:LightSkyBlue"> common land uses</span> and  <span style="color:Plum"> rare land uses</span>. Image chips may receive none or more than one label from these groups.
 
@@ -17,7 +15,7 @@ The main objectives include:
 
 
 
-##### Challenge
+#### Challenge
 
 The challenge of the project lies in addressing the highly imbalanced distribution of data labels among the 16 groups. Specifically, the difficulty arises from the fact that the 'artisanal mine' label constitutes less than 1% of the total population.
 
@@ -38,9 +36,7 @@ Key Challenges:
 
 
 
-#### System Requirement
-
-------
+## System Requirement
 
 AWS GPU instance (Amazon Cloud service) :
 
@@ -50,21 +46,19 @@ AWS GPU instance (Amazon Cloud service) :
 
 Python Packages: , Keras 2.1.6, Tensorflow, opencv
 
-Data Source  "[Planet: Understanding the Amazon from Space](https://www.kaggle.com/c/planet-understanding-the-amazon-from-space)". 
+Data Source  "[Planet: Understanding the Amazon from Space](https://www.kaggle.com/c/planet-understanding-the-amazon-from-space)"
 
 
 
-#### Process Data
+## Process Image
 
-------
-
-``` python
+```shell
 python3 image_test.py
 ```
 
-How was the image data processed?
+How was the satellite image data processed?
 
-The preprocessing of image data in a machine learning project involves several steps to prepare the data for training a model.
+The preprocessing of image data in a machine learning project involves several steps:
 
 1. **Data Augmentation: Flip and Rotation:**
 
@@ -95,9 +89,7 @@ The outcome of the dehazing function is quite remarkable – the haze-free image
 
 
 
-#### Model Explanation 
-
-------
+## Model Explanation
 
 <img style="float:left; width:800px; display: block;margin-right: 350px" src="https://i.imgur.com/YQY8Lca.jpg" />
 
@@ -107,15 +99,18 @@ One fundamental distinction from conventional Convolutional Neural Networks (CNN
 
 I constructed a multi-output model based on the original DenseNet framework. To make it more memory-efficient, I reduced the filter count and adjusted the learning rate, as the original model tends to be resource-intensive. The model was meticulously trained on labeled image datasets over a duration of four hours, and the resulting model was saved as 'b01_dense121.h5.' Subsequently, this model was leveraged to generate labels for images."
 
-#### How to run
 
-------
+
+## How to Run
+
+<img style="float:left; width:800px; display: block;margin-right: 350px" src="https://i.imgur.com/YQY8Lca.jpg" />
 
 - working process
-  - EDA.ipynb  (Image labels Analysis, display images before and after haze removed)
-  - Planet.ipynb 
-  - Image_test (display images before and after dehaze function)
-  
+
+- EDA.ipynb  (Image labels Analysis, display images before and after haze removed)
+- Planet.ipynb 
+- Image_test (display images before and after dehaze function)
+
 - Functions
   - a00_remove_haze.py  
   - a10_densenet_121.py
@@ -129,9 +124,7 @@ I constructed a multi-output model based on the original DenseNet framework. To 
 
 
 
-#### Reference
-
-------
+## Reference
 
 The dehaze function is based on  ["Single Image Haze Removal using Dark Channel Prior"](https://projectsweb.cs.washington.edu/research/insects/CVPR2009/award/hazeremv_drkchnl.pdf) paper.
 
